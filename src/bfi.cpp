@@ -5,53 +5,56 @@ usage - ./bfi [-d] <bf-program.bf>
 */
 
 #include <iostream>
+#include <vector>
 #include <string>
 #include <fstream>
 
-#define MAXMEM 65536
+#define MAX_MEMORY 65536
+#define END_OF_CODE '$'
+#define START_OF_CODE '#'
 
 bool DEBUG;
 
 class bfi {
     private:
         std::string code;
-        int memPtr, codePtr, memory[MAXMEM], maxMemPtr = 0;
+        std::vector<char> memory;
+        
+        std::string::iterator codePtr;
+        std::vector<char>::iterator memPtr;
 
         void printMemoryDump() {
-            std::cerr << "\nmaxMemPtr: " << this->maxMemPtr;
-
-            if (this->maxMemPtr > 0) {
+            if (this->memory.size() > 0) {
                 std::cerr << "\nMemory dump: ";
-                for (int i=0; i < this->maxMemPtr; i++) {
+                for (int i=0; i < this->memory.size(); i++) {
                     std::cerr << i << " : " << this->memory[i] << "\t";
-                    if (i % 10 == 0) std::cout << std::endl;
+                    if (i % 4 == 0) std::cout << std::endl;
                 }
             }
         }
 
     public:
         bfi(std::string program) {
-            if (DEBUG) std::cout << "Initializing ... ";
-            
             // assign code
             this->code = program;
 
-            // init memory
-            for(int i=0; i<MAXMEM; i++) this->memory[i] = 0;
+            // reserve memory
+            this->memory.reserve(MAX_MEMORY);
 
-            this->memPtr = 0;
-            this->codePtr = -1;
-            if (DEBUG) std::cout << "DONE\n";
+            // init iterators
+            this->memPtr = this->memory.begin();
+            this->codePtr = this->code.begin();
         }
 
         void printCode() {
+            // std::cout << "\nDist: \t" << std::distance(this->memory.begin(), this->memPtr) << "\n\n";
             std::cout << "Program: " << this->code << std::endl;
         }
 
         void skipToEndOfLoop() {
             int parenCount = 0;
             while(true) {
-                switch(this->code[this->codePtr]) {
+                switch(*this->codePtr) {
                     case '[':
                         parenCount++;
                         break;
@@ -68,7 +71,7 @@ class bfi {
         void goToBeginningOfLoop() {
             int parenCount = 0;
             while(true) {
-                switch(this->code[this->codePtr]) {
+                switch(*this->codePtr) {
                     case ']':
                         parenCount++;
                         break;
@@ -84,54 +87,70 @@ class bfi {
 
         void run() {
 
-            if (DEBUG) std::cout << "Running ... ";
-
-            char curr;
+            if (DEBUG) std::cout << "Running ... \n";
 
             while (true) {
-                curr = this->code[++this->codePtr];
 
-                if (this->memPtr < 0) {
-                    std::cerr << "Underflow Error!" << std::endl;
-                    exit(-4);
+                if (DEBUG) std::cout << "Parsing " << *this->codePtr 
+                                     << " at " << std::distance(this->code.begin(), this->codePtr)
+                                     << std::endl;
+
+                if (this->memPtr < this->memory.begin()) {
+                    std::cerr << "Memory underflow: "
+                              << "tried to access position " << std::distance(this->memory.begin(), this->memPtr)
+                              << " out of " << this->memory.size() << " elements."
+                              << std::endl;
+                    exit(-1);
                 }
 
-                switch(curr) {
+                switch(*this->codePtr) {
+                    case START_OF_CODE:
+                        // beginning of code
+                        this->memory.push_back(0);
+                        break;
                     case '>':
-                        this->memPtr++;
-                        this->maxMemPtr = std::max(this->memPtr, this->maxMemPtr);
+                        this->memory.push_back(0);
+                        ++this->memPtr;
                         break;
                     case '<':
-                        this->memPtr--;
+                        --this->memPtr;
                         break;
                     case '+':
-                        this->memory[this->memPtr]++;
+                        ++*this->memPtr;
                         break;
                     case '-':
-                        this->memory[this->memPtr]--;
+                        --*this->memPtr;
                         break;
                     case '[':
-                        if (this->memory[this->memPtr] == 0)  skipToEndOfLoop();
+                        if (*this->memPtr == 0) skipToEndOfLoop();
                         break;
                     case ']':
-                        if (this->memory[this->memPtr] != 0) goToBeginningOfLoop();
+                        if (*this->memPtr != 0) goToBeginningOfLoop();
                         break;
                     case ',':
-                        std::cin >> this->memory[this->memPtr];
+                        std::cin >> *this->memPtr;
                         break;
                     case '.':
-                        std::cout << char(this->memory[this->memPtr]);
+                        std::cout << *this->memPtr;
                         break;
-                    case '#':
+                    case END_OF_CODE:
                         // reached End Of Code
                         return;
                     default:
-                        std::cerr << "Error parsing " << curr << " at " << this->codePtr << std::endl; 
+                        std::cerr << "Error parsing " << *this->codePtr 
+                                  << " at " << std::distance(this->codePtr, this->code.begin())
+                                  << std::endl; 
                         exit(-3);
                 }
 
+                ++this->codePtr;
+
                 // if (DEBUG) printMemoryDump();
             }
+
+            // reset iterators
+            this->memPtr = this->memory.begin();
+            this->codePtr = this->code.begin();
 
             if (DEBUG) std::cout << "DONE\n";
         }
@@ -150,12 +169,16 @@ std::string readFile(std::string fileName) {
         exit(-1);
     }
     else {
+
+        // start of code
+        code.push_back(START_OF_CODE);
+
         while (true) {
             inFile >> c;
 
             if(inFile.eof()) {
                 // mark End of Code
-                code.push_back('#');
+                code.push_back(END_OF_CODE);
                 break;
             }
 

@@ -1,7 +1,7 @@
 /*
 bf2c - A minimal Brainf**k to C translator
 author - Sayan Goswami
-usage - ./bfi <bf-program.bf> <c-code.c>
+usage - ./bf2c <bf-program.bf> <c-code.c>
 */
 
 #include <iostream>
