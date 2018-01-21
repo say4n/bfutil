@@ -11,7 +11,7 @@ Run `make build` or `make` in the root directory
 
 If you want to rebuild from scratch, run `make clean` and then follow the above instructions
 
-## :octocat: testing
+## :octocat: test
 
 A few sample bf programs are include in the `bf_samples` directory
 
