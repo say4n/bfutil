@@ -1,7 +1,7 @@
 # bfutil
 A collection of utilities to make `Brainf**k` great again
 
-- [bf2c](#bf2c) : A wannabe efficient `Brainf**k` to C translator
+- [bf2c](#bf2c) : A wannabe efficient `Brainf**k` to C translator (upto 90x faster than the basic REPL interpreter below)
 - [bfinterp](#bfinterp) : An interpreter for `Brainf**k`
 
 
@@ -17,6 +17,9 @@ A wannabe efficient `Brainf**k` to C translator. Uses code contraction to speed 
 Run `make bf2c` or `make` in the root directory
 
 If you want to rebuild from scratch, run `make clean` and then follow the above instructions
+
+### :octocat: screenshot
+![Mandelbrot Fractal run as C code](assets/translator.png)
 
 
 
@@ -37,7 +40,8 @@ If you want to rebuild from scratch, run `make clean` and then follow the above 
 
 A few sample bf programs are include in the `bf_samples` directory
 
-![Mandelbrot Fractal](assets/mandelbrot.png)
+### :octocat: screenshot
+![Mandelbrot Fractal run as BF](assets/interpreter.png)
 
 # :octocat: author
 Sayan Goswami
