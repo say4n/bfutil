@@ -1,12 +1,12 @@
 # bfutil
-A collection of utilities to make Brainf**k great again
+A collection of utilities to make `Brainf**k` great again
 
-- [bf2c](#bf2c) : A wannabe efficient Brainf**k to C translator
-- [bfinterp](#bfinterp) : An interpreter for Brainf**k
+- [bf2c](#bf2c) : A wannabe efficient `Brainf**k` to C translator
+- [bfinterp](#bfinterp) : An interpreter for `Brainf**k`
 
 
 ## bf2c
-A wannabe efficient Brainf**k to C translator. Uses code contraction to speed up native Brainf**k code execution.
+A wannabe efficient `Brainf**k` to C translator. Uses code contraction to speed up native `Brainf**k` code execution.
 
 ### :octocat: usage
 
@@ -21,7 +21,7 @@ If you want to rebuild from scratch, run `make clean` and then follow the above 
 
 
 ## bfinterp
-An interpreter for the esoteric language Brainf**k written in C++
+An interpreter for the esoteric language `Brainf**k` written in C++
 
 ### :octocat: usage
 
