@@ -37,6 +37,7 @@ If you want to rebuild from scratch, run `make clean` and then follow the above 
 
 A few sample bf programs are include in the `bf_samples` directory
 
+![Mandelbrot Fractal](assets/mandelbrot.png)
 
-## :octocat: author
+# :octocat: author
 Sayan Goswami
