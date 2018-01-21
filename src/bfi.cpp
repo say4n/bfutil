@@ -1,7 +1,6 @@
 /*
 bfinterp - Brainf**k Interpreter
 author - Sayan Goswami
-compile - g++ -std=c++11 bfi.cpp -o bfi.out
 usage - ./bfi [-d] <bf-program.bf>
 */
 

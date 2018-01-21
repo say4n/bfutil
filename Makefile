@@ -8,15 +8,21 @@ BUILD=build
 SRC=src
 
 # src files
-FILES = bfi.cpp
-SOURCES = $(FILES:%.cpp=$(SRC)/%.cpp)
+bfi_FILES = bfi.cpp
+bfi_SOURCES = $(bfi_FILES:%.cpp=$(SRC)/%.cpp)
 
+bf2c_FILES = bf2c.cpp
+bf2c_SOURCES = $(bf2c_FILES:%.cpp=$(SRC)/%.cpp)
 
-default: bfi
+default: bfi bf2c
 
 bfi:
-	mkdir $(BUILD)
-	$(CXX) $(CPPFLAGS) $(SOURCES) -o $(BUILD)/bfi.o
+	mkdir -p $(BUILD)
+	$(CXX) $(CPPFLAGS) $(bfi_SOURCES) -o $(BUILD)/bfi.o
+
+bf2c:
+	mkdir -p $(BUILD)
+	$(CXX) $(CPPFLAGS) $(bf2c_SOURCES) -o $(BUILD)/bf2c.o
 
 clean:
 	$(RM) $(BUILD)

@@ -1,19 +1,42 @@
-# bfinterp
-An interpreter for the esoteric language Brainf**k written in C++
+# bfutil
+A collection of utilities to make Brainf**k great again
 
-## :octocat: usage
+- [bf2c](#bf2c) : A bare bones Brainf**k to C translator
+- [bfinterp](#bfinterp) : An interpreter for Brainf**k
 
-`bfi [-d] <path-to-bf-program>`
 
-## :octocat: build
+## bf2c
+A bare bones Brainf**k to C translator
 
-Run `make build` or `make` in the root directory
+### :octocat: usage
+
+`bf2c <path-to-bf-program> <path-to-store-c-program>`
+
+### :octocat: build
+
+Run `make bf2c` or `make` in the root directory
 
 If you want to rebuild from scratch, run `make clean` and then follow the above instructions
 
-## :octocat: test
+
+
+## bfinterp
+An interpreter for the esoteric language Brainf**k written in C++
+
+### :octocat: usage
+
+`bfi [-d] <path-to-bf-program>`
+
+### :octocat: build
+
+Run `make bfi` or `make` in the root directory
+
+If you want to rebuild from scratch, run `make clean` and then follow the above instructions
+
+### :octocat: test
 
 A few sample bf programs are include in the `bf_samples` directory
+
 
 ## :octocat: author
 Sayan Goswami
