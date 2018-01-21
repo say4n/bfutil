@@ -1,12 +1,12 @@
 # bfutil
 A collection of utilities to make Brainf**k great again
 
-- [bf2c](#bf2c) : A bare bones Brainf**k to C translator
+- [bf2c](#bf2c) : A wannabe efficient Brainf**k to C translator
 - [bfinterp](#bfinterp) : An interpreter for Brainf**k
 
 
 ## bf2c
-A bare bones Brainf**k to C translator
+A wannabe efficient Brainf**k to C translator. Uses code contraction to speed up native Brainf**k code execution.
 
 ### :octocat: usage
 

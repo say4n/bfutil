@@ -29,6 +29,36 @@ std::string tabs(int tabLevel) {
     return tab;
 }
 
+int get_consecutive_count(int pos, char current, std::string bf_src_path) {
+    // contract bf code
+    
+    int ctr = 1;
+    char c;
+
+    std::ifstream bf_src(bf_src_path, std::ios::in);
+    bf_src.seekg(pos);
+
+    while (true) {
+        c = bf_src.get();
+
+        if (bf_src.eof()) {
+            // reached eof
+            break;
+        }
+        else if (c != current) {
+            // character is different
+            // unget the character
+            bf_src.unget();
+            break;
+        }
+        else {
+            ctr++;
+        }
+    }
+
+    return ctr;
+}
+
 int main(int argc, char** argv) {
 
     if(argc < 2) {
@@ -67,7 +97,8 @@ int main(int argc, char** argv) {
 
             // process bf input
             char curr;
-            int tabLevel = 1;
+            int tabLevel = 1, cnt=0;
+
             while (true) {
                 curr = inFile.get();
 
@@ -77,16 +108,28 @@ int main(int argc, char** argv) {
 
                 switch (curr) {
                     case '>':
-                        outFile << "++cell;\n";
+                        cnt = get_consecutive_count(inFile.tellg(), '>', bf_source_path);
+                        // move to next non repeating character
+                        inFile.seekg(cnt-1, std::ios_base::cur);
+                        outFile << "cell+=" << cnt << ";\n";
                         break;
                     case '<':
-                        outFile << "--cell;\n";
+                        cnt = get_consecutive_count(inFile.tellg(), '<', bf_source_path);
+                        // move to next non repeating character
+                        inFile.seekg(cnt-1, std::ios_base::cur);
+                        outFile << "cell-=" << cnt << ";\n";
                         break;
                     case '+':
-                        outFile << "++*cell;\n";
+                        cnt = get_consecutive_count(inFile.tellg(), '+', bf_source_path);
+                        // move to next non repeating character
+                        inFile.seekg(cnt-1, std::ios_base::cur);
+                        outFile << "*cell+=" << cnt << ";\n";
                         break;
                     case '-':
-                        outFile << "--*cell;\n";
+                        cnt = get_consecutive_count(inFile.tellg(), '-', bf_source_path);
+                        // move to next non repeating character
+                        inFile.seekg(cnt-1, std::ios_base::cur);
+                        outFile << "*cell-=" << cnt << ";\n";
                         break;
                     case '[':
                         tabLevel++;
